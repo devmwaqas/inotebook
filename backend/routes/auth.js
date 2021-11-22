@@ -97,6 +97,9 @@ router.post('/registration', [
         } catch (error) {
             res.status(500).send();
         }
+    });
+
+    router.post('/getuser', fetchuser , (req,res) => {
 
 
     });
