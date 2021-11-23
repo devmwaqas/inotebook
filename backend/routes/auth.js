@@ -4,6 +4,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fetchuser = require('../middleware/fetchuser');
 
 
 router.get('/login', (req, res) => {
@@ -99,9 +100,14 @@ router.post('/registration', [
         }
     });
 
-    router.post('/getuser', fetchuser , (req,res) => {
-
-
+    router.post('/getuser', fetchuser , async (req,res) => {
+        try {
+            const userId = req.user.id;
+            const user = await Users.findById(userId).select("-password");
+            res.status(200).json({ user: user });
+        } catch (error) {
+            res.status(500).send();  
+        }
     });
 
 module.exports = router
