@@ -14,9 +14,6 @@ const fetchuser = (req, res, next) => {
     } catch (error) {
         res.status(401).send();
     }
-
-    
 }
-
 
 module.exports = fetchuser;

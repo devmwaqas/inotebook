@@ -110,4 +110,22 @@ router.post('/registration', [
         }
     });
 
+    router.post('/logout', fetchuser, async (req, res)=> {
+
+        try {
+            
+            const token = req.header('Auth-Token');
+            const data = {
+                user: req.user.id
+            };
+
+            jwt.sign(data, 'secret', { expiresIn: '1s' });
+            res.status(200).send("Loggedout");
+
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+
+    })
+
 module.exports = router
