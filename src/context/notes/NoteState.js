@@ -2,93 +2,93 @@ import { useState } from 'react';
 import noteContext from './noteContext'
 
 const NoteState = (props) => {
-
-    const mynotes = [{
-        "_id": "619ccb2403fa96d7ce9d34b7",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:12.111Z",
-        "__v": 0
-      },
-      {
-        "_id": "619ccb2503fa96d7ce9d34b9",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:13.892Z",
-        "__v": 0
-      },
-      {
-        "_id": "619ccb2603fa96d7ce9d34bb",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:14.432Z",
-        "__v": 0
-      },
-      {
-        "_id": "619ccb2603fa96d7ce9d34bd",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:14.614Z",
-        "__v": 0
-      },
-      {
-        "_id": "619ccb2603fa96d7ce9d34c1",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:14.999Z",
-        "__v": 0
-      },
-      {
-        "_id": "619ccb2703fa96d7ce9d34c3",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:15.183Z",
-        "__v": 0
-      },
-      {
-        "_id": "619ccb2703fa96d7ce9d34c5",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:15.375Z",
-        "__v": 0
-      },
-      {
-        "_id": "619ccb2703fa96d7ce9d34c7",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:15.558Z",
-        "__v": 0
-      },
-      {
-        "_id": "619ccb2703fa96d7ce9d34c9",
-        "user": "619b9b25124c0f45fecf72a9",
-        "title": "Science Notes",
-        "description": "Its my first science notes",
-        "tag": "Science",
-        "created_at": "2021-11-23T11:06:15.742Z",
-        "__v": 0
-      }];
-
+    const host = "http://localhost:5000/api/";
+    const mynotes = [];
     const [notes, setNotes] = useState(mynotes);
 
-    return(
-        <noteContext.Provider value={{ notes, setNotes }}>
+    const getAllNotes = async () => {
+
+        const response = await fetch(`${host}notes/fetchallnotes`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Auth-Token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5YjliMjUxMjRjMGY0NWZlY2Y3MmE5In0sImlhdCI6MTYzNzc1NTQzOH0.PX6XWVHZv2xeyOxx3TqbFVIM3Avt3i_k4e69kgEBwoc'
+            }
+        });
+
+        const notes = await response.json();
+        setNotes(notes);
+    }
+
+    //Add a Note
+    const addNote = async (title, description, tag) => {
+
+        const data =
+        {
+            title: title,
+            description: description,
+            tag: tag
+        };
+
+        const response = await fetch(`${host}notes/addnotes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Auth-Token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5YjliMjUxMjRjMGY0NWZlY2Y3MmE5In0sImlhdCI6MTYzNzc1NTQzOH0.PX6XWVHZv2xeyOxx3TqbFVIM3Avt3i_k4e69kgEBwoc'
+            },
+            body: JSON.stringify(data)
+        });
+        const allnotes = await response.json();
+        // setNotes([]);
+        setNotes(notes.concat(allnotes.notes));
+    }
+
+    //Delete a Note
+    const deleteNote = async (id) => {
+
+        const response = await fetch(`${host}notes/deletenote/${id}`, {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'Auth-Token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5YjliMjUxMjRjMGY0NWZlY2Y3MmE5In0sImlhdCI6MTYzNzc1NTQzOH0.PX6XWVHZv2xeyOxx3TqbFVIM3Avt3i_k4e69kgEBwoc'
+            }
+        });
+        const result = await response.json();
+        if(result.msg === "success"){
+            const newNotes = notes.filter(note => note._id !== id);
+            setNotes(newNotes);
+        }
+    }
+
+    //Edit Note
+    const editNote = async (id, title, description, tag) => {
+
+        const data = {
+            "title": title,
+            "description": description,
+            "tag": tag
+        };
+
+        const response = await fetch(`${host}notes/updatenote/${id}`, {
+            method: 'PUT',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'Auth-Token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE5YjliMjUxMjRjMGY0NWZlY2Y3MmE5In0sImlhdCI6MTYzNzc1NTQzOH0.PX6XWVHZv2xeyOxx3TqbFVIM3Avt3i_k4e69kgEBwoc'
+            },
+            body: JSON.stringify(data)
+        });
+
+        await response.json();
+        getAllNotes();
+
+    }
+
+    return (
+        <noteContext.Provider value={{ notes, addNote, deleteNote, editNote, getAllNotes }}>
             {props.children}
         </noteContext.Provider>
     )

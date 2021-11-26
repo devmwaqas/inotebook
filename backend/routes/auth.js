@@ -93,10 +93,10 @@ router.post('/registration', [
             }
 
             const authtoken = jwt.sign(data, 'secret');
-            res.json({authtoken});
+            res.json({ "msg": "success", 'token': authtoken });
             
         } catch (error) {
-            res.status(500).send();
+            res.status(500).send({ error: "Internal server error."});
         }
     });
 
@@ -123,7 +123,7 @@ router.post('/registration', [
             res.status(200).send("Loggedout");
 
         } catch (error) {
-            res.status(500).send(error.message);
+            res.status(500).send({ error: "Internal error"});
         }
 
     })

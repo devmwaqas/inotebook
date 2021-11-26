@@ -31,12 +31,13 @@ router.post('/addnotes', fetchuser, [
         });
 
         if (result) {
-            res.json({ "msg": "success", "response": "Notes successfully created." })
+            // const notes = await Notes.find({ user: req.user.id });
+            res.json({ "msg": "sucess", "notes": result });
         } else {
             res.json({ "msg": "error", "response": "Something went wrong please try again." })
         }
     } catch (error) {
-        res.status(500).send();
+        res.status(500).send(error.message);
     }
 });
 

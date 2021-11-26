@@ -1,7 +1,13 @@
 import React from 'react'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate} from "react-router-dom";
 
 export default function Navbar() {
+
+    const navigate = useNavigate();
+    const logout = () => {
+        localStorage.removeItem('token');
+        navigate('/home')
+    }
     const location = useLocation();
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -13,26 +19,29 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === '/home'? "active" : "" }`} aria-current="page" to="/home">Home</Link>
+                            <Link className={`nav-link ${location.pathname === '/home' ? "active" : ""}`} aria-current="page" to="/home">Home</Link>
                         </li>
 
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === '/notes'? "active" : "" }`} aria-current="page" to="/notes">Notes</Link>
+                            <Link className={`nav-link ${location.pathname === '/notes' ? "active" : ""}`} aria-current="page" to="/notes">Notes</Link>
                         </li>
 
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === '/about'? "active" : "" }`} to="/about">About</Link>
-                        </li>
-                        
-                        <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === '/login'? "active" : "" }`} to="/login">Login</Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === '/singup'? "active" : "" }`} to="/singup">Signup</Link>
+                            <Link className={`nav-link ${location.pathname === '/about' ? "active" : ""}`} to="/about">About</Link>
                         </li>
 
                     </ul>
+
+                    {!localStorage.getItem('token') &&
+                        <div className="d-flex">
+                            <Link className={`btn btn-${location.pathname === '/login' ? "primary" : "light"} mx-1`} to="/login">Login</Link>
+                            <Link className={`btn btn-${location.pathname === '/singup' ? "primary" : "light"} mx-1`} to="/singup">Signup</Link>
+                        </div>}
+
+                    {localStorage.getItem('token') &&
+                        <div className="d-flex">
+                            <button type="button" className="btn btn-danger" onClick={logout}>Logout</button>
+                        </div>}
 
                 </div>
             </div>
