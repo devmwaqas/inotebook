@@ -52,7 +52,8 @@ router.post('/registration', [
             }
 
             var authtoken = jwt.sign(data, 'secret');
-            res.json({authtoken});
+            // res.json({authtoken});
+            res.json({ "msg": "success", "response": "Successfully signup and loggedin.", 'token': authtoken });
 
         } catch(error) {
             res.status(500).send();

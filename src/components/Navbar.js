@@ -21,10 +21,10 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === '/home' ? "active" : ""}`} aria-current="page" to="/home">Home</Link>
                         </li>
-
+                        {localStorage.getItem('token') &&
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === '/notes' ? "active" : ""}`} aria-current="page" to="/notes">Notes</Link>
-                        </li>
+                        </li>}
 
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === '/about' ? "active" : ""}`} to="/about">About</Link>
@@ -35,7 +35,7 @@ export default function Navbar() {
                     {!localStorage.getItem('token') &&
                         <div className="d-flex">
                             <Link className={`btn btn-${location.pathname === '/login' ? "primary" : "light"} mx-1`} to="/login">Login</Link>
-                            <Link className={`btn btn-${location.pathname === '/singup' ? "primary" : "light"} mx-1`} to="/singup">Signup</Link>
+                            <Link className={`btn btn-${location.pathname === '/signup' ? "primary" : "light"} mx-1`} to="/signup">Signup</Link>
                         </div>}
 
                     {localStorage.getItem('token') &&
